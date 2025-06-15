@@ -2,9 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mywebapp
+  labels:
+    app: mywebapp            # ✅ Required for ServiceMonitor to match
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    name: flask
-  type: NodePort
+    - name: flask            # ✅ Must match in ServiceMonitor
+      port: 80
+      protocol: TCP
+  type: NodePort             # ✅ OK to leave as NodePort
+  selector:
+    app: mywebapp            # ✅ Should match your Deployment/Pod labels
