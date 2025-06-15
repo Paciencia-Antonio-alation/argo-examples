@@ -1,19 +1,23 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: kustom-mywebapp-v1-servicemonitor
+  name: mywebapp-servicemonitor
+  namespace: dev
   labels:
-    release: my-prometheus            # 🔥 Must match Prometheus CR's label selector
+    release: my-prometheus       # Must match your Prometheus CR label selector
 spec:
   selector:
     matchLabels:
-      app: kustomwebapp              # ✅ Must match label on the Service
+      app: mywebapp              # Must match your Service's label
   namespaceSelector:
     matchNames:
-      - dev                          # ✅ Namespace where the service lives
-  jobLabel: job                      # ✅ Will use job=node-api in Prometheus Targets
+      - dev                      # Namespace where your service is deployed
+  jobLabel: job
   endpoints:
-    - port: flask                     # ✅ This must match the named port in the Service (see below)
-      path: /metrics                 # ✅ Your app must expose this path
+    - port: flask                # Must match the named port in your Service
+      path: /metrics
+      scheme: https              # 🔥 Enables HTTPS scraping
       interval: 30s
       scrapeTimeout: 10s
+      tlsConfig:
+        insecureSkipVerify: true   # 🔥 Skips TLS cert validation (needed here)
