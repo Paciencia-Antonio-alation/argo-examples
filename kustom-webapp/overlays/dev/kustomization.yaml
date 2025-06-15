@@ -3,7 +3,12 @@ bases:
 
 patchesStrategicMerge:
   - replicas.yaml
+  - patch-service.yaml
+
+resources:
+  - servicemonitor-prometheus.yaml            # If you also created this
 
 configMapGenerator:
   - name: mykustom-map
     env: config.properties
+
