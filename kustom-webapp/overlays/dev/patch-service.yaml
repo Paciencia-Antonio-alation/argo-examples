@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mywebapp                    # Must match the name in base service.yaml
+spec:
+  ports:
+    - name: flask                   # Prometheus Operator requires named ports
+      port: 80
+      protocol: TCP
+  selector:
+    app: mywebapp                   # Ensure it selects the right pods
+metadata:
+  labels:
+    app: mywebapp                   # Required for ServiceMonitor to match
+    job: node-api                   # Optional, used for jobLabel in Prometheus
