@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kustom-mywebapp-v1-servicemonitor
+  labels:
+    release: my-prometheus            # 🔥 Must match Prometheus CR's label selector
+spec:
+  selector:
+    matchLabels:
+      app: kustomwebapp              # ✅ Must match label on the Service
+  namespaceSelector:
+    matchNames:
+      - dev                          # ✅ Namespace where the service lives
+  jobLabel: job                      # ✅ Will use job=node-api in Prometheus Targets
+  endpoints:
+    - port: http                     # ✅ This must match the named port in the Service (see below)
+      path: /metrics                 # ✅ Your app must expose this path
+      interval: 30s
+      scrapeTimeout: 10s
