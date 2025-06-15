@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: mywebapp
   labels:
-    app: mywebapp            # ✅ Required for ServiceMonitor to match
+    app: mywebapp
+    job: node-api
 spec:
   ports:
     - name: flask            # ✅ Must match in ServiceMonitor
